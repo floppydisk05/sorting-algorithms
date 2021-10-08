@@ -12,33 +12,75 @@ namespace sorting_algorithms {
         static void Main(string[] args) {
             // Define a list
             List<int> nums = new List<int>() {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+            Console.WriteLine("Original List:");
             nums.ForEach(Console.WriteLine);
 
             // Shuffle the list
-            Random random = new Random();
-            for (int i = nums.Count - 1; i > 0; i--) {
-                int randomIndex = random.Next(0, i + 1);
+            Console.WriteLine("\n\nShuffled List");
+            shuffleList(nums).ForEach(Console.WriteLine);
+            Console.WriteLine("\n\nSorted List:");
+            bubbleSort(nums).ForEach(Console.WriteLine);
+            selectionSort(nums).ForEach(Console.WriteLine);
+            insertionSort(nums).ForEach(Console.WriteLine);
 
-                int temp = nums[i];
-                nums[i] = nums[randomIndex];
-                nums[randomIndex] = temp;
-            }
-            
-            bubbleSort(nums);
         }
 
-        public static void bubbleSort(List<int> list) {
-            Console.WriteLine("\n\n\n");
-            bool ordered = false;
-            while (ordered == false) {
-                for (int x = 0; x < list.Count(); x++) {
-                    // If this is the first item in the list, do nothing
-                    if (x == 0) { continue; }
-                    else {
+        public static List<int> shuffleList(List<int> list) {
+            Random random = new Random();
+            for (int i = list.Count - 1; i > 0; i--) {
+                int randomIndex = random.Next(0, i + 1);
 
+                int temp = list[i];
+                list[i] = list[randomIndex];
+                list[randomIndex] = temp;
+            }
+            return list;
+        }
+
+        public static List<int> bubbleSort(List<int> list) {
+            for (int i = 0; i < list.Count(); i++) {
+                for (int j = 0; j < list.Count() - i - 1; j++) {
+                    if (list[j] > list[j + 1]) {
+                        int temp = list[j];
+                        list[j] = list[j+1];
+                        list[j+1] = temp;
                     }
                 }
+            }        
+            return list;    
+        }
+        
+        public static List<int> selectionSort(List<int> list) {
+            int temp, smallest;
+            int n = list.Count();
+            for (int i = 0; i < n - 1; i++)
+            {
+                smallest = i;
+                for (int j = i + 1; j < n; j++)
+                {
+                    if (list[j] < list[smallest])
+                    {
+                        smallest = j;
+                    }
+                }
+                temp = list[smallest];
+                list[smallest] = list[i];
+                list[i] = temp;
             }
+            return list;
+        }
+
+        public static List<int> insertionSort(List<int> list) {
+            for (int step = 1; step < list.Count(); step ++) {
+                int key = list[step];
+                int j = step - 1;
+                while (j >= 0 && key < list[j]) {
+                    list[j + 1] = list[j];
+                    j -= 1;
+                }
+                list[j + 1] = key;
+            }
+            return list;
         }
     }
 }
