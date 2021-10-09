@@ -1,15 +1,15 @@
 ﻿using System;
-using System.IO;
-using System.Net;
 using System.Linq;
-using System.Reflection;
-using System.IO.Compression;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 
+using Serilog;
 namespace sorting_algorithms {
     class Program {
         static void Main(string[] args) {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateLogger();
+
             // Define a list
             List<int> nums = new List<int>() {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
             Console.WriteLine("Original List:");
@@ -17,11 +17,16 @@ namespace sorting_algorithms {
 
             // Shuffle the list
             Console.WriteLine("\n\nShuffled List");
+            Log.Information("List Shuffled");
             shuffleList(nums).ForEach(Console.WriteLine);
-            Console.WriteLine("\n\nSorted List:");
+            Log.Information("Running Bubble Sort");
             bubbleSort(nums).ForEach(Console.WriteLine);
+            Log.Information("Running Selection Sort");
             selectionSort(nums).ForEach(Console.WriteLine);
+            Log.Information("Running Insertion Sort");
             insertionSort(nums).ForEach(Console.WriteLine);
+
+            Log.CloseAndFlush();
 
         }
 
